@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Calculadora</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Soya Honda Iwata">
+
+<style>
+input, select{min-height: 25px;}
+h1, h2, p{text-align: center; font-family: Arial, Helvetica, sans-serif;}
+table{text-align: left; width: 70%; margin-left:auto; margin-right:auto; }
+</style>
+
+<script>
+var tipo;
+window.onload = function () { 
+	tipo = document.getElementById("tipo");
+	if (tipo.value == "1") op1(); 
+	else if (tipo.value == "2") op2();
+	}
+
+function op1() {
+hide("ajuda");
+hide("base");
+hide("conv");
+hide("op2");
+show("op1");
+tipo = 1;
+document.getElementById("tipo").value = 1;
+document.getElementById("fat").checked = true;
+document.getElementById("label_n1").innerText = "Valor:";
+}
+function op2() {
+hide("ajuda");
+hide("base");
+hide("conv");
+hide("op1");
+show("op2");
+tipo = 2;
+document.getElementById("tipo").value = 2;
+document.getElementById("label_n1").innerText = "Valor 1:";
+}
+function conv() {
+hide("ajuda");
+hide("base");
+hide("op2");
+hide("op1");
+show("conv");
+tipo = 3;
+document.getElementById("real_dolar").checked = true;
+document.getElementById("label_n1").innerText = "Valor:";
+change("R$", "US$");
+}
+function base() {
+hide("ajuda");
+hide("conv");
+hide("op2");
+hide("op1");
+show("base");
+tipo = 4;
+document.getElementById("dec_bin").checked = true;
+document.getElementById("label_n1").innerText = "Valor:";
+}
+function ajuda() {
+hide("base");
+hide("conv");
+hide("op2");
+hide("op1");
+show("ajuda");
+tipo = 5;
+}
+
+function operacao() {
+if (tipo == 2)
+return String(document.getElementById("option").value);
+else {
+var x = document.getElementsByName("operacao");
+for (var i = 0; i < x.length; i++) {
+if (x[i].checked) return x[i].id;
+}
+}
+}
+function submit() {
+var op = operacao();
+var n1 = document.getElementById("n1");
+var n2 = document.getElementById("n2");
+var n3 = document.getElementById("n3");
+var n4 = document.getElementById("n4");
+var final;
+
+switch (op) {
+case "fat": final = fatorial(n1.value);
+break;
+case "sqrt": final = Math.sqrt(n1.value);
+break;
+case "sqr": final = Math.pow(n1.value, 2);
+break;
+case "cub": final = Math.pow(n1.value, 3);
+break;
+case "sin": final = Math.sin(n1.value);
+break;
+case "inv": final = 1 / n1.value;
+break;
+case "real_dolar": final = n1.value * n3.value * n4.value;
+break;
+case "dolar_real": final = n1.value * n3.value * n4.value;
+break;
+case "real_euro": final = n1.value * n3.value * n4.value;
+break;
+case "euro_real": final = n1.value * n3.value * n4.value;
+break;
+case "+": final = parseInt(n1.value) + parseInt(n2.value);
+break;
+case "-": final = n1.value - n2.value;
+break;
+case "*": final = n1.value * n2.value;
+break;
+case "/": final = n1.value / n2.value;
+break;
+case "mod": final = parseInt(n1.value) % parseInt(n2.value);
+break;
+case "dec_bin": final = parseInt(n1.value).toString(2);
+break;
+case "dec_hex": final = parseInt(n1.value).toString(16);
+break;
+case "bin_dec": final = parseInt(n1.value, 2);
+break;
+case "hex_dec": final = parseInt(n1.value, 16);
+break;
+default:
+break;
+}
+
+document.getElementById("result").value = final;
+return final;
+}
+
+function hide(c) {
+var x = document.getElementsByClassName(c);
+for (var i = 0; i < x.length; i++) {
+x[i].style.display = "none";
+}
+}
+function show(c) {
+var x = document.getElementsByClassName(c);
+for (var i = 0; i < x.length; i++) {
+x[i].style.display = "inline";
+}
+}
+
+function change(x, y) {
+document.getElementById("label_n3").innerText = x;
+document.getElementById("label_n4").innerText = y;
+var n3 = document.getElementById("n3");
+var n4 = document.getElementById("n4");
+if (x == "US$") { n3.value = 1; n4.value = 3.9; }
+if (x == "€") { n3.value = 1; n4.value = 4.5; }
+if (y == "US$") { n3.value = 1; n4.value = 0.26; }
+if (y == "€") { n3.value = 1; n4.value = 0.22; }
+}
+
+function fatorial(num) {
+if (num < 0) {
+return -1;
+}
+else if (num == 0) {
+return 1;
+}
+else {
+return (num * fatorial(num - 1));
+}
+}
+
+function clean() {
+document.getElementById("result").value = "";
+document.getElementById("n1").value = "";
+document.getElementById("n2").value = "";
+return 0;
+}
+</script>
+</head>
+
+<body>
+
+<form method="get" action="Operacoes">
+<input type="hidden" id="tipo" name="tipo" value="1">
+<h1>Calculadora Servlet</h1>
+<p>
+<a href="#" onclick="op1()">1 operando</a>
+<a href="#" onclick="op2()">2 operando</a>
+<!-- <a href="#" onclick="conv()">Conversor de moedas</a> -->
+<!-- <a href="#" onclick="base()">Conversor de bases</a> -->
+<a href="#" onclick="ajuda()">Ajuda</a>
+</p>
+<div class="op1">
+<h2>1 Operando</h2>
+</div>
+<div class="op2">
+<h2>2 Operando</h2>
+</div>
+<div class="conv">
+<h2>Conversor de moedas</h2>
+</div>
+<div class="base">
+<h2>Conversor de bases</h2>
+</div>
+<div class="ajuda">
+<h2>Ajuda</h2>
+</div>
+
+<table>
+<tr>
+<td>
+<div class="op1 op2 conv base">
+<label for="n1" id="label_n1">Valor 1:</label>
+<input id="n1" type="text" size="15" name="n1"value="0">
+</div>
+</td>
+
+<td>
+<div class="op2">
+<label for="option" id="label_option">Operação:</label>
+<select id="option" name="option">
+<option value="sum">+</option>
+<option value="minus">-</option>
+<option value="multi">*</option>
+<option value="divide">/</option>
+<option value="mod">mod</option>
+</select>
+
+<label for="n2" id="label_n2">Valor 2:</label>
+<input id="n2" type="text" size="15" name="n2" value="0">
+</div>
+</td>
+
+<td>
+<div class="conv">
+Cotações:
+<label for="n3" id="label_n3">n3</label>
+<input id="n3" type="text" size="10">
+<label for="n4" id="label_n4">n4</label>
+<input id="n4" type="text" size="10">
+</div>
+</td>
+</tr>
+</table>
+
+<div class="op1">
+<table>
+<tr>
+<td>
+<input type="radio" name="operacao" id="fat" value="fat">
+<label for="fat">x! (fatorial de x)</label>
+</td>
+<td>
+<input type="radio" name="operacao" id="sqrt" value="sqrt">
+<label for="sqrt">raiz quadrada (x)</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="sqr" value="sqr">
+<label for="sqr">x²</label>
+</td>
+<td>
+<input type="radio" name="operacao" id="sin" value="sin">
+<label for="sin">seno (x)</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="cub" value="cub">
+<label for="cub">x³</label>
+</td>
+<td>
+<input type="radio" name="operacao" id="inv" value="inv">
+<label for="inv">1/x</label>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="conv">
+<table>
+<tr>
+<td>
+<input type="radio" name="operacao" id="real_dolar" onchange="change('R$', 'US$')">
+<label for="real_dolar">R$ -> US$</label>
+</td>
+<td>
+<input type="radio" name="operacao" id="dolar_real" onchange="change('US$', 'R$')">
+<label for="dolar_real">US$ -> R$</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="real_euro" onchange="change('R$', '€')">
+<label for="real_euro">R$ -> euro €</label>
+</td>
+<td>
+<input type="radio" name="operacao" id="euro_real" onchange="change('€', 'R$')">
+<label for="euro_real">euro € -> R$</label>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="base">
+<table>
+<tr>
+<td>
+<input type="radio" name="operacao" id="dec_bin">
+<label for="dec_bin">Dec -> Bin</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="dec_hex">
+<label for="dec_hex">Dec -> Hex</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="bin_dec">
+<label for="bin_dec">Bin -> Dec</label>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="operacao" id="hex_dec">
+<label for="hex_dec">Hex -> Dec</label>
+</td>
+</tr>
+</table>
+</div>
+
+<table>
+<tr>
+<td>
+<div class="op1 op2 conv base">
+<label for="result">Resultado:</label>
+<input id="result" type="text" size="100">
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="op1 op2 conv base">
+<a href="#" onclick="clean()"><input type="button" value="Limpar"></a>
+<input type="submit" value="Executar">
+</div>
+</td>
+</tr>
+</table>
+
+
+<div class="ajuda">
+<p>Calculadora criada por Soya Honda Iwata. Direitos reservados. 2018.</p>
+</div>
+</form>
+
+</body>
+
+</html>  
