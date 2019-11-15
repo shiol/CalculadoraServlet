@@ -13,25 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 public class Operacoes extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public Operacoes() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String t = request.getParameter("tipo") != "" ? request.getParameter("tipo") : "1";
 		String x = request.getParameter("n1") != "" ? request.getParameter("n1") : "0";
 		String y = request.getParameter("n2") != "" ? request.getParameter("n2") : "0";
-		
+
 		int tipo = Integer.parseInt(t);
 		String option = request.getParameter("option");
 		String operacao = request.getParameter("operacao");
@@ -45,9 +37,10 @@ public class Operacoes extends HttpServlet {
 		request.setAttribute("sresultado", resultado);
 		request.setAttribute("stipo", tipo);
 
-		FileInputStream inputStream = new FileInputStream(new File(getServletContext().getRealPath("") + "/index.html"));
+		FileInputStream inputStream = new FileInputStream(
+				new File(getServletContext().getRealPath("") + "/index.html"));
 		InputStreamReader streamReader = new InputStreamReader(inputStream, "UTF-8");
-		
+
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			int c;
@@ -63,19 +56,14 @@ public class Operacoes extends HttpServlet {
 		}
 
 		response.getWriter()
-			.append("<script>document.getElementById(\"result\").value = \"" + resultado + "\";</script>")
-			.append("<script>document.getElementById(\"n1\").value = \"" + n1 + "\";</script>")
-			.append("<script>document.getElementById(\"n2\").value = \"" + n2 + "\";</script>")
-			.append("<script>document.getElementById(\"tipo\").value = \"" + tipo + "\";</script>");
+				.append("<script>document.getElementById(\"result\").value = \"" + resultado + "\";</script>")
+				.append("<script>document.getElementById(\"n1\").value = \"" + n1 + "\";</script>")
+				.append("<script>document.getElementById(\"n2\").value = \"" + n2 + "\";</script>")
+				.append("<script>document.getElementById(\"tipo\").value = \"" + tipo + "\";</script>");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
